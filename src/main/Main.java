@@ -1,9 +1,11 @@
 package main;
 
 import model.Modeler;
+import stats.Stats1Gram;
 import tokeniser.Tokenizer;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,10 +18,10 @@ public class Main {
             e.printStackTrace();
             System.exit(-1);
         }
-        System.out.println("1-gram :");
-        System.out.println(m.oneGram());
-        System.out.println("---------------------------------------------");
-        System.out.println("2-gram :");
-        System.out.println(m.twoGram());
+        Stats1Gram s = new Stats1Gram(m);
+        HashMap<Integer, Double> chances = s.calculate();
+        System.out.println(- Math.log(0.5) / Math.log(2));
+        System.out.println(chances.get(77104));
+        System.out.println(s.perplexity());
     }
 }

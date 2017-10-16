@@ -17,14 +17,15 @@ public class Stats1Gram {
     }
 
     public HashMap<Integer, Double> calculate() {
-        double sizeLog = Math.log(size + size*alpha);
+        double sizeLog = size + size*alpha;
 
         HashMap<Integer, Double> result = new HashMap<>();
         for(Map.Entry<Integer, Integer> entry : counts.entrySet()) {
             int token = entry.getKey();
             int count = entry.getValue();
 
-            result.put(token, - Math.log(count + alpha) - sizeLog);
+            double chance = - Math.log((count + alpha) / sizeLog);
+            result.put(token, chance);
         }
 
         chances = result;
