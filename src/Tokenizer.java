@@ -2,13 +2,12 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class Tokenizer {
     private Node head;
-    private List<Integer> tokens;
+    //private List<Integer> tokens;
 
     public void init(String path) throws IOException {
         head = Utils.parse(path);
@@ -21,26 +20,18 @@ public class Tokenizer {
 
             result.add(found.getKey());
             int subIndex;
-            if (found.getKey() == -1)
-                subIndex = sentence.indexOf(' ')+1;   // todo multiple separators
+            if (found.getKey() == -1) {
+                subIndex = sentence.indexOf(' ') + 1;   // todo multiple separators
+                if (subIndex == 0)
+                    sentence = "";
+            }
             else
                 subIndex = Math.min(found.getValue()+1, sentence.length());
             sentence = sentence.substring(subIndex);
             if (Objects.equals(sentence, ""))
                 break;
         }
-        tokens = result;
-        return result;
-    }
-
-    public HashMap<Integer, Integer> count() {
-        HashMap<Integer, Integer> result = new HashMap<>();
-        for (Integer token : tokens) {
-            if (result.containsKey(token))
-                result.replace(token, result.get(token)+1);
-            else
-                result.put(token, 1);
-        }
+        //tokens = result;
         return result;
     }
 }
