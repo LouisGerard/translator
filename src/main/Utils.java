@@ -1,3 +1,7 @@
+package main;
+
+import tokeniser.Node;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

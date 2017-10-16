@@ -1,4 +1,7 @@
+package tokeniser;
+
 import javafx.util.Pair;
+import main.Utils;
 
 public class Node {
     public final static Character[] SEPARATORS = {' ', ',', '!', '?', '.', ':'};
@@ -64,7 +67,7 @@ public class Node {
             this.index = index;
     }
 
-    public Pair<Integer, Integer> getWordIndex(String word) {
+    Pair<Integer, Integer> getWordIndex(String word) {
         return getWordIndex(word, -1, -1, 1);
     }
 

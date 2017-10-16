@@ -1,3 +1,8 @@
+package main;
+
+import model.Modeler;
+import tokeniser.Tokenizer;
+
 import java.io.IOException;
 
 public class Main {
@@ -5,7 +10,7 @@ public class Main {
         Tokenizer t = new Tokenizer();
         Modeler m = new Modeler(t);
         try {
-            t.init("/home/louis/Documents/cours/fil-tp1/res/dico.txt");
+            t.init("/home/louis/Documents/cours/fil-tp1/res/dico.txt"); // todo change dico
             m.init("/home/louis/Documents/cours/fil-tp1/res/corpus.txt");
         } catch (IOException e) {
             e.printStackTrace();
