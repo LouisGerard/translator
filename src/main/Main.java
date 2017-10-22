@@ -2,6 +2,7 @@ package main;
 
 import model.Modeler;
 import stats.Stats1Gram;
+import stats.Stats2Gram;
 import tokeniser.Tokenizer;
 
 import java.io.IOException;
@@ -18,10 +19,9 @@ public class Main {
             e.printStackTrace();
             System.exit(-1);
         }
-        Stats1Gram s = new Stats1Gram(m);
-        HashMap<Integer, Double> chances = s.calculate();
-        System.out.println(- Math.log(0.5) / Math.log(2));
-        System.out.println(chances.get(77104));
+        Stats2Gram s = new Stats2Gram(m);
+        HashMap<Integer, HashMap<Integer, Double>> chances = s.calculate();
+        System.out.println(chances.get(77104).get(81900));
         System.out.println(s.perplexity());
     }
 }

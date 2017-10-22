@@ -13,6 +13,7 @@ public class Modeler {
     private List<List<Integer>> tokens = new ArrayList<>();
     private Tokenizer t;
     private int nbTokens = 0;
+    private int nb2Tokens = 0;
 
     public Modeler(Tokenizer t) {
         this.t = t;
@@ -65,6 +66,7 @@ public class Modeler {
                         next.put(token, 1);
                 }
                 else {
+                    ++nb2Tokens;
                     HashMap<Integer, Integer> toInsert = new HashMap<>();
                     toInsert.put(token, 1);
                     result.put(lastToken, toInsert);
@@ -78,5 +80,9 @@ public class Modeler {
 
     public int getNbTokens() {
         return nbTokens;
+    }
+
+    public int getNb2Tokens() {
+        return nb2Tokens;
     }
 }
