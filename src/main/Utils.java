@@ -16,7 +16,7 @@ public class Utils {
                 break;
             int cutIndex = line.indexOf(' ');
             int index = Integer.parseInt(line.substring(0, cutIndex));
-            String word = line.substring(cutIndex+1);
+            String word = line.substring(cutIndex + 1);
             word = word.replace('_', ' ');
             n.insertWord(word, index);
         }

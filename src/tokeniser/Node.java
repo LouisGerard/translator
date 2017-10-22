@@ -62,8 +62,7 @@ public class Node {
                 r = new Node(word.charAt(1));
             }
             r.insertWord(word.substring(1), index);
-        }
-        else
+        } else
             this.index = index;
     }
 
@@ -84,7 +83,7 @@ public class Node {
                 }
             }
             if (r != null)
-                return r.getWordIndex(word.substring(1), lastIndexFound, lastLength, cpt+1);
+                return r.getWordIndex(word.substring(1), lastIndexFound, lastLength, cpt + 1);
             return new Pair<>(lastIndexFound, lastLength); // word found
         }
 

@@ -1,19 +1,18 @@
 package stats;
 
-import model.Modeler;
+import model.Modeler2Gram;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Stats2Gram {
+public class Stats2Gram implements Stats {
     private HashMap<Integer, HashMap<Integer, Integer>> counts;
     private HashMap<Integer, HashMap<Integer, Double>> chances;
     private int size;
-    private double alpha = 0.1;
 
-    public Stats2Gram(Modeler m) {
-        counts = m.twoGram();
-        size = m.getNb2Tokens();
+    public Stats2Gram(Modeler2Gram m) {
+        counts = m.model();
+        size = m.getNbTokens();
     }
 
     public HashMap<Integer, HashMap<Integer, Double>> calculate() {
@@ -25,7 +24,7 @@ public class Stats2Gram {
             for (Map.Entry<Integer, Integer> entry2 : count.entrySet()) {
                 int token2 = entry2.getKey();
 
-                double chance = - Math.log((entry2.getValue() + alpha) / (size + size*alpha));
+                double chance = -Math.log((entry2.getValue() + alpha) / (size + size * alpha));
                 toInsert.put(token2, chance);
             }
             result.put(token1, toInsert);

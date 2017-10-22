@@ -1,7 +1,6 @@
 package main;
 
-import model.Modeler;
-import stats.Stats1Gram;
+import model.Modeler2Gram;
 import stats.Stats2Gram;
 import tokeniser.Tokenizer;
 
@@ -11,7 +10,7 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
         Tokenizer t = new Tokenizer();
-        Modeler m = new Modeler(t);
+        Modeler2Gram m = new Modeler2Gram(t);
         try {
             t.init("/home/louis/Documents/cours/fil-tp1/res/dico.txt"); // todo change dico
             m.init("/home/louis/Documents/cours/fil-tp1/res/corpus.txt");

@@ -27,9 +27,8 @@ public class Tokenizer {
                 subIndex = sentence.indexOf(' ') + 1;   // todo multiple separators
                 if (subIndex == 0)
                     sentence = "";
-            }
-            else
-                subIndex = Math.min(found.getValue()+1, sentence.length());
+            } else
+                subIndex = Math.min(found.getValue() + 1, sentence.length());
             sentence = sentence.substring(subIndex);
             if (Objects.equals(sentence, ""))
                 break;
