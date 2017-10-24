@@ -7,5 +7,5 @@ public interface Stats {
 
     Map calculate();
 
-    double perplexity();
+    double perplexity(String text);
 }

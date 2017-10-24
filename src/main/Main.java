@@ -5,7 +5,6 @@ import stats.Stats2Gram;
 import tokeniser.Tokenizer;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,9 +17,8 @@ public class Main {
             e.printStackTrace();
             System.exit(-1);
         }
-        Stats2Gram s = new Stats2Gram(m);
-        HashMap<Integer, HashMap<Integer, Double>> chances = s.calculate();
-        System.out.println(chances.get(77104).get(81900));
-        System.out.println(s.perplexity());
+        Stats2Gram s = new Stats2Gram(m, t);
+        s.calculate();
+        System.out.println(s.perplexity("c'est pas le remboursement du mois hein je vous rassure hein"));
     }
 }
