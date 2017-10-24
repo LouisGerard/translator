@@ -26,7 +26,7 @@ public class Tokenizer {
             int subIndex;
 
             if (found.getKey() == -1) {
-                subIndex = sentence.indexOf(' ') + 1;   // todo multiple separators
+                subIndex = Utils.multiIndexOf(sentence, Node.SEPARATORS) + 1;
                 if (subIndex == 0)
                     sentence = "";
             } else

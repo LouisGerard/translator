@@ -29,4 +29,13 @@ public class Utils {
                 return true;
         return false;
     }
+
+    public static <T> int multiIndexOf(String text, Character[] needles) {
+        for (int i = 0; i < text.length(); ++i) {
+            for (char needle : needles)
+                if (needle == text.charAt(i))
+                    return i;
+        }
+        return -1;
+    }
 }
