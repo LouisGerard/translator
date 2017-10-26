@@ -36,7 +36,7 @@ public class Stats1Gram implements Stats {
 
     public double perplexity(String text) {
         double sumLogProb = 0;
-        List<Integer> tokens =  t.tokenize(text.toLowerCase());
+        List<Integer> tokens =  t.tokenize(text);
 
         for (int token : tokens) {
             double chance;
