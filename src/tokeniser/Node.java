@@ -1,7 +1,7 @@
 package tokeniser;
 
 import javafx.util.Pair;
-import main.Utils;
+import utils.Utils;
 
 public class Node {
     public final static Character[] SEPARATORS = {' ', ',', '!', '?', '.', ':'};

@@ -1,4 +1,4 @@
-package main;
+package utils;
 
 import tokeniser.Node;
 
@@ -18,7 +18,7 @@ public class Utils {
             int index = Integer.parseInt(line.substring(0, cutIndex));
             String word = line.substring(cutIndex + 1);
             word = word.replace('_', ' ');
-            n.insertWord(word, index);
+            n.insertWord(word.toLowerCase(), index);
         }
         return n.getL();
     }

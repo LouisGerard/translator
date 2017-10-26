@@ -1,7 +1,7 @@
 package tokeniser;
 
 import javafx.util.Pair;
-import main.Utils;
+import utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -36,12 +36,11 @@ public class Stats2Gram implements Stats {
 
                 double chance;
                 if (token1 == 0) {
-                    int count1 = counts1.get(token2);
-                    chance = (count1 + alpha) / (size + size * alpha);
+                    chance = ((double) count2 /*+ alpha*/) / (size /*+ size * alpha*/); // todo fix smoothing
                 }
                 else {
                     int count1 = counts1.get(token1);
-                    chance = (count2 + alpha) / (count1 + size * alpha);
+                    chance = ((double) count2 /*+ alpha*/) / (count1 /*+ size * alpha*/);   // todo fix smoothing
                 }
 
                 toInsert.put(token2, chance);
@@ -55,6 +54,7 @@ public class Stats2Gram implements Stats {
     }
 
     public double perplexity(String text) {
+        text = text.toLowerCase();
         double sumLogProb = 0;
         List<Integer> tokens =  t.tokenize(text);
         int lastToken = 0;
@@ -66,9 +66,11 @@ public class Stats2Gram implements Stats {
             else
                 chance = alpha / (size + size * alpha);
             sumLogProb += -Math.log(chance);
+
+            lastToken = token;
         }
 
         double avgLogProb = sumLogProb / tokens.size();
-        return Math.pow(2, avgLogProb);
+        return Math.exp(avgLogProb);
     }
 }
