@@ -34,14 +34,8 @@ public class Stats2Gram implements Stats {
                 int token2 = entry2.getKey();
                 int count2 = entry2.getValue();
 
-                double chance;
-                if (token1 == 0) {
-                    chance = ((double) count2 /*+ alpha*/) / (size /*+ size * alpha*/); // todo fix smoothing
-                }
-                else {
-                    int count1 = counts1.get(token1);
-                    chance = ((double) count2 /*+ alpha*/) / (count1 /*+ size * alpha*/);   // todo fix smoothing
-                }
+                int count1 = counts1.get(token1);
+                double chance = ((double) count2 + alpha) / (count1 + size * alpha);   // todo fix smoothing
 
                 toInsert.put(token2, chance);
             }
@@ -72,5 +66,13 @@ public class Stats2Gram implements Stats {
 
         double avgLogProb = sumLogProb / tokens.size();
         return Math.exp(avgLogProb);
+    }
+
+    public HashMap<Integer, HashMap<Integer, Double>> getChances() {
+        return chances;
+    }
+
+    public Tokenizer getT() {
+        return t;
     }
 }
