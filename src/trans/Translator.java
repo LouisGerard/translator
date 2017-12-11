@@ -3,6 +3,7 @@ package trans;
 import model.Modeler1Gram;
 import model.Modeler2Gram;
 import stats.Stats2Gram;
+import structures.TableTuple;
 import tokeniser.Tokenizer;
 
 import java.io.BufferedReader;
@@ -15,61 +16,73 @@ import java.util.List;
 
 import static jdk.nashorn.internal.objects.Global.Infinity;
 
-public class TranslatorEnFr {
-    private Tokenizer ten;
+public class Translator {
+    private Tokenizer tsrc;
     private Stats2Gram stats;
-    private String transTable;
 
     private ArrayList<ArrayList<Double>> alpha;
     private ArrayList<ArrayList<Integer>> beta;
     private ArrayList<ArrayList<Integer>> tokens;
+    private LinkedList<TableTuple> transTable;
 
-    public TranslatorEnFr(String lexiqueFr, String lexiqueEn, String corpusFr, String corpusEn, String transTable) throws IOException {
-        Tokenizer tfr = new Tokenizer();
-        tfr.init(lexiqueFr);
-        Modeler1Gram m1fr = new Modeler1Gram(tfr);
-        m1fr.init(corpusFr);
-        Modeler2Gram m2fr = new Modeler2Gram(tfr);
-        m2fr.init(corpusFr);
+    public Translator(String lexiqueDest, String lexiqueSrc, String corpusDest, String transTable) throws IOException {
+        Tokenizer tdest = new Tokenizer(lexiqueDest);
+        Modeler1Gram m1dest = new Modeler1Gram(tdest);
+        m1dest.init(corpusDest);
+        Modeler2Gram m2dest = new Modeler2Gram(tdest);
+        m2dest.init(corpusDest);
 
-        this.stats = new Stats2Gram(m1fr, m2fr, tfr);
+        this.stats = new Stats2Gram(m1dest, m2dest, tdest);
         this.stats.calculate();
 
-        Tokenizer ten = new Tokenizer();
-        ten.init(lexiqueEn);
-        this.ten = ten;
+        this.tsrc = new Tokenizer(lexiqueSrc);
 
-        this.transTable = transTable;
-        this.alpha = new ArrayList<>();
-        this.beta = new ArrayList<>();
-        this.tokens = new ArrayList<>();
+        this.transTable = new LinkedList<>();
+        initTransTable(transTable);
     }
 
-    public void set(String sentence) throws IOException {
-        List<Integer> sentenceTokens = ten.tokenize(sentence);
+    private void initTransTable(String path) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        while(true) {
+            String line = br.readLine();
+            if (line == null)
+                break;
+
+            String[] lineSplitted = line.split(" ");
+            int tokenSrc = Integer.parseInt(lineSplitted[0]);
+            int tokenDest = Integer.parseInt(lineSplitted[1]);
+            double proba = Double.parseDouble(lineSplitted[2]);
+            transTable.add(new TableTuple(tokenSrc, tokenDest, proba));
+        }
+        br.close();
+    }
+
+    public List<Integer> translate(String sentence) {
+        alpha = new ArrayList<>();
+        beta = new ArrayList<>();
+        tokens = new ArrayList<>();
+
+        initLattice(sentence);
+        viterbi();
+        return getViterbiResult();
+    }
+
+    private void initLattice(String sentence) {
+        List<Integer> sentenceTokens = tsrc.tokenize(sentence);
 
         int colNum = 0;
         for (int token : sentenceTokens) {
-            BufferedReader br = new BufferedReader(new FileReader(this.transTable));
             boolean found = false;
             alpha.add(new ArrayList<>());
             beta.add(new ArrayList<>());
             tokens.add(new ArrayList<>());
 
-            while(true) {
-                String line = br.readLine();
-                if (line == null)
-                    break;
-
-                String[] lineSplitted = line.split(" ");
-                int tokenEn = Integer.parseInt(lineSplitted[0]);
-                int tokenFr = Integer.parseInt(lineSplitted[1]);
-                double proba = Double.parseDouble(lineSplitted[2]);
-                if (tokenEn == token) {
+            for (TableTuple tuple : transTable) {
+                if (tuple.getTokenSrc() == token) {
                     found = true;
-                    alpha.get(colNum).add(proba);
+                    alpha.get(colNum).add(tuple.getProba());
                     beta.get(colNum).add(0);
-                    tokens.get(colNum).add(tokenFr);
+                    tokens.get(colNum).add(tuple.getTokenDest());
                 }
                 else if (found)
                     break;
@@ -81,13 +94,11 @@ public class TranslatorEnFr {
                 tokens.get(colNum).add(-1);
             }
 
-            br.close();
             ++colNum;
         }
     }
 
-    public List<Integer> viterbi() {
-        LinkedList<Integer> result = new LinkedList<>();
+    private void viterbi() {
         int max;
         HashMap<Integer, HashMap<Integer, Double>> chances = stats.getChances();
         for (int line = 0; line < alpha.get(0).size(); ++line) {
@@ -124,6 +135,10 @@ public class TranslatorEnFr {
                 alpha.get(col).set(line, alphaValue);
             }
         }
+    }
+
+    private List<Integer> getViterbiResult() {
+        LinkedList<Integer> result = new LinkedList<>();
 
         int maxLastLine = 0;
         double maxValue = Infinity;
@@ -140,6 +155,5 @@ public class TranslatorEnFr {
             maxLastLine = beta.get(col).get(maxLastLine);
         }
         return result;
-
     }
 }

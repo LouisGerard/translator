@@ -1,4 +1,4 @@
-package tokeniser;
+package structures;
 
 import javafx.util.Pair;
 import utils.Utils;
@@ -66,7 +66,7 @@ public class Node {
             this.index = index;
     }
 
-    Pair<Integer, Integer> getWordIndex(String word) {
+    public Pair<Integer, Integer> getWordIndex(String word) {
         return getWordIndex(word, -1, -1, 1);
     }
 

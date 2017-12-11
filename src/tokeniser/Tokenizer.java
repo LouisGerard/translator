@@ -1,8 +1,11 @@
 package tokeniser;
 
 import javafx.util.Pair;
+import structures.Node;
 import utils.Utils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +13,27 @@ import java.util.Objects;
 
 public class Tokenizer {
     private Node head;
-    //private List<Integer> tokens;
+    private int size;
 
-    public void init(String path) throws IOException {
-        head = Utils.parse(path);
+    public Tokenizer(String path) throws IOException {
+        size = 0;
+        Node n = new Node(' ');
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        while (true) {
+            String line = br.readLine();
+            if (line == null)
+                break;
+            int cutIndex = line.indexOf(' ');
+            int index = Integer.parseInt(line.substring(0, cutIndex));
+            String word = line.substring(cutIndex + 1);
+            word = word.replace('_', ' ');
+            n.insertWord(word, index);
+            ++size;
+        }
+        head = n.getL();
     }
 
     public List<Integer> tokenize(String sentence) {
-        //sentence = sentence.toLowerCase();
         List<Integer> result = new ArrayList<>();
 
         while (true) {
@@ -38,7 +54,10 @@ public class Tokenizer {
                 break;
         }
 
-        //tokens = result;
         return result;
+    }
+
+    public int getSize() {
+        return size;
     }
 }

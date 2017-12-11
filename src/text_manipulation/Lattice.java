@@ -12,7 +12,7 @@ import java.util.List;
 
 import static jdk.nashorn.internal.objects.Global.Infinity;
 
-public class Lattice {
+public class Lattice { /* TEST CLASS -> new version in trans.Translator
     private HashMap<Integer, HashMap<Integer, Double>> alpha;
     private HashMap<Integer, HashMap<Integer, Integer>> beta;
     private HashMap<Integer, HashMap<Integer, Integer>> tokens;
@@ -126,5 +126,5 @@ public class Lattice {
             beta.get(colNum).put(lineNum, 0);
             tokens.get(colNum).put(lineNum++, index);
         }
-    }
+    }*/
 }

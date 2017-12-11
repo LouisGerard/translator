@@ -54,7 +54,6 @@ public class Stats2Gram implements Stats {
     }
 
     public double perplexity(String text) {
-        text = text.toLowerCase();
         double sumLogProb = 0;
         List<Integer> tokens =  t.tokenize(text);
         int lastToken = 0;
