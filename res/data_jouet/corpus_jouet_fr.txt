@@ -1,0 +1,8 @@
+<s> la maison est sympa </s>
+<s> tu es sympa </s>
+<s> ils sont sympa </s>
+<s> la maison est fraîche </s>
+<s> la maison fraîche est cool </s>
+<s> on est cool </s>
+<s> vous êtes sympa </s>
+<s> une maison sympa </s>

@@ -52,7 +52,6 @@ public class TranslatorEnFr {
         for (int token : sentenceTokens) {
             BufferedReader br = new BufferedReader(new FileReader(this.transTable));
             boolean found = false;
-            HashMap<Integer, Double> translatePossibilities = new HashMap<>();
             alpha.add(new ArrayList<>());
             beta.add(new ArrayList<>());
             tokens.add(new ArrayList<>());
@@ -68,7 +67,6 @@ public class TranslatorEnFr {
                 double proba = Double.parseDouble(lineSplitted[2]);
                 if (tokenEn == token) {
                     found = true;
-                    translatePossibilities.put(tokenFr, proba);
                     alpha.get(colNum).add(proba);
                     beta.get(colNum).add(0);
                     tokens.get(colNum).add(tokenFr);
@@ -78,8 +76,10 @@ public class TranslatorEnFr {
             }
 
             // handle not found
-            if (translatePossibilities.size() == 0)
-                translatePossibilities.put(-1, 10.0);
+            if (alpha.get(colNum).size() == 0) {
+                alpha.get(colNum).add(1.0);
+                tokens.get(colNum).add(-1);
+            }
 
             br.close();
             ++colNum;

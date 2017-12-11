@@ -1,0 +1,8 @@
+<s> the house is nice <s>
+<s> you are nice <s>
+<s> they are cool <s>
+<s> the house is cool <s>
+<s> the cool house is nice <s>
+<s> we are cool <s>
+<s> you are cool <s>
+<s> a cool house </s>

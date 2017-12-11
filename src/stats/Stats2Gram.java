@@ -36,11 +36,11 @@ public class Stats2Gram implements Stats {
 
                 double chance;
                 if (token1 == 0) {
-                    chance = ((double) count2 + alpha) / (counts2.size() + counts2.size() * alpha);
+                    chance = -Math.log(((double) count2 + alpha) / (counts2.size() + counts2.size() * alpha));
                 }
                 else {
                     int count1 = counts1.get(token1);
-                    chance = ((double) count2 + alpha) / (count1 + count1 * alpha);
+                    chance = -Math.log(((double) count2 + alpha) / (count1 + count1 * alpha));
                 }
 
                 toInsert.put(token2, chance);
@@ -64,8 +64,8 @@ public class Stats2Gram implements Stats {
             if (chances.containsKey(lastToken) && chances.get(lastToken).containsKey(token))
                 chance = chances.get(lastToken).get(token);
             else
-                chance = alpha / (size + size * alpha);
-            sumLogProb += -Math.log(chance);
+                chance = -Math.log(alpha / (size + size * alpha));
+            sumLogProb += chance;
 
             lastToken = token;
         }

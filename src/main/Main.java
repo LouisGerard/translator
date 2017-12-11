@@ -12,12 +12,12 @@ public class Main {
         TranslatorEnFr l = null;
         HashMap<Integer, HashMap<Integer, Double>> lattice = null;
         try {
-            l = new TranslatorEnFr("res/lexique2.fr_parsed.txt",
-                    "res/lexique.en_parsed.txt",
-                    "res/corpus2.fr.txt",
-                    "res/corpus2.en.txt",
-                    "res/table-traduction.en.fr.txt");
-            l.set("I 'm going to Paris");
+            l = new TranslatorEnFr("res/data_jouet/lexique_jouet.txt",
+                    "res/data_jouet/lexique_jouet.txt",
+                    "res/data_jouet/corpus_jouet_fr.txt",
+                    "res/data_jouet/corpus_jouet_en.txt",
+                    "res/data_jouet/table_trad_en2fr_10.txt");
+            l.set("<s> the cool house is nice <s>");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -30,8 +30,6 @@ public class Main {
             System.out.print(" ");
         }
         System.out.print('\n');
-
-        System.out.println("The end\nLa fin\n");
 
     }
 }

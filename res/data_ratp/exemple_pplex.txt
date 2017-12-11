@@ -1,0 +1,8 @@
+<s> je va à Paris </s>
+<s> on va à Paris </s>
+<s> je vais à Paris </s>
+<s> on vais à Paris </s>
+<s> tu vas à Paris </s>
+<s> elle vais à Paris </s>
+<s> elle va à Paris </s>
+<s> tu vais à Paris </s>
