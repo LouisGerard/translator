@@ -1,45 +1,28 @@
 package main;
 
-import model.Modeler1Gram;
-import model.Modeler2Gram;
-import stats.Stats2Gram;
-import text_manipulation.Lattice;
-import tokeniser.Tokenizer;
+import trans.TranslatorEnFr;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-        Tokenizer t = new Tokenizer();
-        Modeler1Gram m1 = new Modeler1Gram(t);
-        Modeler2Gram m2 = new Modeler2Gram(t);
+
+        TranslatorEnFr l = null;
+        HashMap<Integer, HashMap<Integer, Double>> lattice = null;
         try {
-            t.init("res/lexique2.fr_parsed.txt");
-            m1.init("res/corpus1.fr.txt");
-            m2.init("res/corpus1.fr.txt");
+            l = new TranslatorEnFr("res/lexique2.fr_parsed.txt",
+                    "res/lexique.en_parsed.txt",
+                    "res/corpus2.fr.txt",
+                    "res/corpus2.en.txt",
+                    "res/table-traduction.en.fr.txt");
+            lattice = l.getLattice("I 'm going to Paris");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
-        Stats2Gram s = new Stats2Gram(m1, m2, t);
-        s.calculate();
 
-        Lattice l = null;
-        try {
-            l = new Lattice(s, "res/treillis_test.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-        l.testEmission();
+        System.out.println("The end\nLa fin\n");
 
-        List<Integer> test = l.viterbi();
-
-        for (int token : test) {
-            System.out.print(token);
-            System.out.print(", ");
-        }
-        System.out.print('\n');
     }
 }

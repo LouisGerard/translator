@@ -17,7 +17,7 @@ public class Tokenizer {
     }
 
     public List<Integer> tokenize(String sentence) {
-        sentence = sentence.toLowerCase();
+        //sentence = sentence.toLowerCase();
         List<Integer> result = new ArrayList<>();
 
         while (true) {
