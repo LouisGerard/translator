@@ -1,7 +1,7 @@
 <?php
 
-$in = fopen('../../res/dico2.txt', 'r');
-$out = fopen('../../res/dico2_parsed.txt', 'c');
+$in = fopen('../../res/lexique.en.txt', 'r');
+$out = fopen('../../res/lexique.en_parsed.txt', 'c');
 
 while ($line = rtrim(fgets($in), "\n")) {
 	$line = explode(' ', $line);

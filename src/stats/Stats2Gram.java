@@ -36,11 +36,11 @@ public class Stats2Gram implements Stats {
 
                 double chance;
                 if (token1 == 0) {
-                    chance = ((double) count2 + alpha) / (size + size * alpha); // todo count1
+                    chance = ((double) count2 + alpha) / (counts2.size() + counts2.size() * alpha);
                 }
                 else {
                     int count1 = counts1.get(token1);
-                    chance = ((double) count2 + alpha) / (count1 + size * alpha);   // todo fix smoothing
+                    chance = ((double) count2 + alpha) / (count1 + count1 * alpha);
                 }
 
                 toInsert.put(token2, chance);

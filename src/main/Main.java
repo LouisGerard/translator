@@ -15,9 +15,9 @@ public class Main {
         Modeler1Gram m1 = new Modeler1Gram(t);
         Modeler2Gram m2 = new Modeler2Gram(t);
         try {
-            t.init("res/lexique2_parsed.txt");
-            m1.init("res/corpus.txt");
-            m2.init("res/corpus.txt");
+            t.init("res/lexique2.fr_parsed.txt");
+            m1.init("res/corpus1.fr.txt");
+            m2.init("res/corpus1.fr.txt");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -27,7 +27,7 @@ public class Main {
 
         Lattice l = null;
         try {
-            l = new Lattice(s, "res/treillis.txt");
+            l = new Lattice(s, "res/treillis_test.txt");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
