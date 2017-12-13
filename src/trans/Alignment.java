@@ -76,23 +76,18 @@ public class Alignment {
             brCorpusScr.close();
             brCorpusDest.close();
 
-            maxChange = 0;
-            for (int tokenSrc : tokensSrc) {
-                for (int tokenDest : tokensDest) {
-                    double oldValue = probas.get(tokenSrc).get(tokenDest);
-                    if (Double.isNaN(oldValue) || oldValue < EPSILON)
-                        continue;
-
-                    double newValue = nb.get(tokenSrc).get(tokenDest) / total.get(tokenDest);
-                    probas.get(tokenSrc).put(tokenDest, newValue);
-
-                    double change = Math.abs(newValue - oldValue);
-                    if (change > maxChange)
-                        maxChange = change;
-                }
-            }
+            maxChange = updateProba(tokensSrc, tokensDest, nb, total);
         } while (maxChange > EPSILON);
 
+        DecimalFormatSymbols changeComma = new DecimalFormatSymbols();
+        changeComma.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#.######", changeComma);
+        df.setRoundingMode(RoundingMode.CEILING);
+
+        writeTable(tokensSrc, tokensDest);
+    }
+
+    private void writeTable(List<Integer> tokensSrc, List<Integer> tokensDest) throws IOException {
         DecimalFormatSymbols changeComma = new DecimalFormatSymbols();
         changeComma.setDecimalSeparator('.');
         DecimalFormat df = new DecimalFormat("#.######", changeComma);
@@ -110,6 +105,29 @@ public class Alignment {
                 bwOutput.newLine();
             }
         bwOutput.close();
+    }
+
+    private double updateProba(List<Integer> tokensSrc,
+                               List<Integer> tokensDest,
+                               HashMap<Integer, HashMap<Integer, Double>> nb,
+                               HashMap<Integer, Double> total) {
+        double maxChange = 0;
+        for (int tokenSrc : tokensSrc) {
+            for (int tokenDest : tokensDest) {
+                double oldValue = probas.get(tokenSrc).get(tokenDest);
+                if (Double.isNaN(oldValue) || oldValue < EPSILON)
+                    continue;
+
+                double newValue = nb.get(tokenSrc).get(tokenDest) / total.get(tokenDest);
+                probas.get(tokenSrc).put(tokenDest, newValue);
+
+                double change = Math.abs(newValue - oldValue);
+                if (change > maxChange)
+                    maxChange = change;
+            }
+        }
+
+        return maxChange;
     }
 
     private HashMap<Integer, HashMap<Integer, Double>> initProbas(int srcSize) throws IOException {
