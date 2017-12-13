@@ -2,23 +2,32 @@ package trans;
 
 import tokeniser.Tokenizer;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static jdk.nashorn.internal.objects.Global.Infinity;
-
 public class Alignment {
     public final double EPSILON = 0.0001;
 
-    private String lexiconSrc  = "res/data_jouet/lexique_jouet.txt";
-    private String lexiconDest = "res/data_jouet/lexique_jouet.txt";
-    private String corpusSrc  = "res/data_jouet/corpus_jouet_en.txt";
-    private String corpusDest = "res/data_jouet/corpus_jouet_fr.txt";
+    private String lexiconSrc;
+    private String lexiconDest;
+    private String corpusSrc;
+    private String corpusDest;
+    private String output;
+
     private HashMap<Integer, HashMap<Integer, Double>> probas;
+
+    public Alignment(String lexiconSrc, String lexiconDest, String corpusSrc, String corpusDest, String output) {
+        this.lexiconSrc = "res/" + lexiconSrc;
+        this.lexiconDest = "res/" + lexiconDest;
+        this.corpusSrc = "res/" + corpusSrc;
+        this.corpusDest = "res/" + corpusDest;
+        this.output = "res/" + output;
+    }
 
     public void em() throws IOException {
         Tokenizer tSrc = new Tokenizer(lexiconSrc);
@@ -71,7 +80,7 @@ public class Alignment {
             for (int tokenSrc : tokensSrc) {
                 for (int tokenDest : tokensDest) {
                     double oldValue = probas.get(tokenSrc).get(tokenDest);
-                    if (oldValue < EPSILON)
+                    if (Double.isNaN(oldValue) || oldValue < EPSILON)
                         continue;
 
                     double newValue = nb.get(tokenSrc).get(tokenDest) / total.get(tokenDest);
@@ -84,7 +93,23 @@ public class Alignment {
             }
         } while (maxChange > EPSILON);
 
-        System.out.println("Ok");
+        DecimalFormatSymbols changeComma = new DecimalFormatSymbols();
+        changeComma.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("#.######", changeComma);
+        df.setRoundingMode(RoundingMode.CEILING);
+
+        BufferedWriter bwOutput = new BufferedWriter(new FileWriter(output));
+        for (int tokenSrc : tokensSrc)
+            for (int tokenDest : tokensDest) {
+                double proba = probas.get(tokenSrc).get(tokenDest);
+                if (Double.isNaN(proba) || proba == 0.0)
+                    continue;
+
+                double logprob = -Math.log(proba);
+                bwOutput.write(tokenSrc + " " + tokenDest + " " + df.format(logprob));
+                bwOutput.newLine();
+            }
+        bwOutput.close();
     }
 
     private HashMap<Integer, HashMap<Integer, Double>> initProbas(int srcSize) throws IOException {
@@ -171,6 +196,11 @@ public class Alignment {
     }
 
     public static void main(String[] args) {
-
+        Alignment a = new Alignment(args[0], args[1], args[2], args[3], args[4]);
+        try {
+            a.em();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

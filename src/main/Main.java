@@ -1,36 +1,40 @@
 package main;
 
-import trans.Alignment;
 import trans.Translator;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
         Translator l = null;
-        HashMap<Integer, HashMap<Integer, Double>> lattice = null;
-        Alignment a = new Alignment();
         try {
-            /*l = new Translator("res/data_jouet/lexique_jouet.txt",
+            l = new Translator("res/data_jouet/lexique_jouet.txt",
                     "res/data_jouet/lexique_jouet.txt",
                     "res/data_jouet/corpus_jouet_fr.txt",
-                    "res/data_jouet/table_trad_en2fr_10.txt");*/
-            a.em();
+                    "res/out/table.txt");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
 
-        /*List<Integer> test = l.translate("<s> the cool house is nice <s>");
+        Scanner sc = new Scanner(System.in);
 
-        for (int token : test) {
-            System.out.print(token);
-            System.out.print(" ");
+        while (true) {
+            String input = sc.nextLine();
+            if (Objects.equals(input, "quit"))
+                break;
+
+            List<Integer> test = l.translate(input);
+
+            for (int token : test) {
+                System.out.print(token);
+                System.out.print(" ");
+            }
+            System.out.print('\n');
         }
-        System.out.print('\n');*/
-
     }
 }
