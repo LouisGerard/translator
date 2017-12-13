@@ -30,6 +30,7 @@ public class Modeler2Gram implements Modeler {
             List<Integer> lineTokens = t.tokenize(line);
             tokens.add(lineTokens);
         }
+        br.close();
     }
 
     public HashMap<Integer, HashMap<Integer, Integer>> model() {

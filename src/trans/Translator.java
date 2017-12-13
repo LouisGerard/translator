@@ -25,8 +25,8 @@ public class Translator {
     private ArrayList<ArrayList<Integer>> tokens;
     private LinkedList<TableTuple> transTable;
 
-    public Translator(String lexiqueDest, String lexiqueSrc, String corpusDest, String transTable) throws IOException {
-        Tokenizer tdest = new Tokenizer(lexiqueDest);
+    public Translator(String lexiconDest, String lexiconSrc, String corpusDest, String transTable) throws IOException {
+        Tokenizer tdest = new Tokenizer(lexiconDest);
         Modeler1Gram m1dest = new Modeler1Gram(tdest);
         m1dest.init(corpusDest);
         Modeler2Gram m2dest = new Modeler2Gram(tdest);
@@ -35,7 +35,7 @@ public class Translator {
         this.stats = new Stats2Gram(m1dest, m2dest, tdest);
         this.stats.calculate();
 
-        this.tsrc = new Tokenizer(lexiqueSrc);
+        this.tsrc = new Tokenizer(lexiconSrc);
 
         this.transTable = new LinkedList<>();
         initTransTable(transTable);

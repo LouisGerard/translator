@@ -31,6 +31,7 @@ public class Modeler1Gram implements Modeler {
             nbTokens += lineTokens.size();
             tokens.add(lineTokens);
         }
+        br.close();
     }
 
     public HashMap<Integer, Integer> model() {
