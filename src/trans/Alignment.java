@@ -48,7 +48,7 @@ public class Alignment {
         do {
             for (int tokenSrc : tokensSrc)
                 for (int tokenDest : tokensDest)
-                    nb.get(tokenSrc).put(tokenDest, 0.0);
+                    nb.get(tokenSrc).put(tokenDest, 0.0);   // todo opti -> fill only when found
 
             for (int tokenDest : tokensDest)
                 total.put(tokenDest, 0.0);
@@ -154,7 +154,7 @@ public class Alignment {
 
                 int cutIndexDest = lineDest.indexOf(' ');
                 int tokenDest = Integer.parseInt(lineDest.substring(0, cutIndexDest));
-                probas.get(tokenSrc).put(tokenDest, 1.0/srcSize);
+                probas.get(tokenSrc).put(tokenDest, 1.0/srcSize);   // todo opti -> fill only when found
             }
             brDest.close();
         }
