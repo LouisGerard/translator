@@ -18,7 +18,7 @@ public class Stats2Gram implements Stats {
     public Stats2Gram(Modeler1Gram m1, Modeler2Gram m2, Tokenizer t) {
         counts1 = m1.model();
         counts2 = m2.model();
-        size = m1.getNbTokens();
+        size = m2.getNbTokens();
         this.t = t;
     }
 
@@ -42,6 +42,10 @@ public class Stats2Gram implements Stats {
                     int count1 = counts1.get(token1);
                     chance = -Math.log(((double) count2 + alpha) / (count1 + count1 * alpha));
                 }
+
+
+                /*int count1 = counts1.get(token1);
+                chance = -Math.log(((double) count2 + alpha) / (count1 + size * alpha));*/
 
                 toInsert.put(token2, chance);
             }

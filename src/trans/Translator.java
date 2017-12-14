@@ -91,6 +91,7 @@ public class Translator {
             // handle not found
             if (alpha.get(colNum).size() == 0) {
                 alpha.get(colNum).add(1.0);
+                beta.get(colNum).add(0);
                 tokens.get(colNum).add(-1);
             }
 
@@ -155,5 +156,9 @@ public class Translator {
             maxLastLine = beta.get(col).get(maxLastLine);
         }
         return result;
+    }
+
+    public Tokenizer getTsrc() {
+        return tsrc;
     }
 }

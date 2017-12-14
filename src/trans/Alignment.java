@@ -27,6 +27,7 @@ public class Alignment {
         this.corpusSrc = "res/" + corpusSrc;
         this.corpusDest = "res/" + corpusDest;
         this.output = "res/" + output;
+        probas = new HashMap<>();
     }
 
     public void em() throws IOException {
@@ -36,12 +37,21 @@ public class Alignment {
         List<Integer> tokensSrc  = getTokens(lexiconSrc);
         List<Integer> tokensDest = getTokens(lexiconDest);
 
-        probas = initProbas(tSrc.getSize());
+        initProbas(tSrc.getSize());
         double maxChange;
+        HashMap<Integer, HashMap<Integer, Double>> nb = new HashMap<>();
+        for (int tokenSrc : tokensSrc) {
+            nb.put(tokenSrc, new HashMap<>());
+        }
+        HashMap<Integer, Double> total = new HashMap<>();
 
         do {
-            HashMap<Integer, HashMap<Integer, Double>> nb = initNb(tokensSrc, tokensDest);
-            HashMap<Integer, Double> total = initTotal(tokensDest);
+            for (int tokenSrc : tokensSrc)
+                for (int tokenDest : tokensDest)
+                    nb.get(tokenSrc).put(tokenDest, 0.0);
+
+            for (int tokenDest : tokensDest)
+                total.put(tokenDest, 0.0);
 
             BufferedReader brCorpusScr  = new BufferedReader(new FileReader(corpusSrc));
             BufferedReader brCorpusDest = new BufferedReader(new FileReader(corpusDest));
@@ -78,11 +88,6 @@ public class Alignment {
 
             maxChange = updateProba(tokensSrc, tokensDest, nb, total);
         } while (maxChange > EPSILON);
-
-        DecimalFormatSymbols changeComma = new DecimalFormatSymbols();
-        changeComma.setDecimalSeparator('.');
-        DecimalFormat df = new DecimalFormat("#.######", changeComma);
-        df.setRoundingMode(RoundingMode.CEILING);
 
         writeTable(tokensSrc, tokensDest);
     }
@@ -130,9 +135,7 @@ public class Alignment {
         return maxChange;
     }
 
-    private HashMap<Integer, HashMap<Integer, Double>> initProbas(int srcSize) throws IOException {
-        HashMap<Integer, HashMap<Integer, Double>> result = new HashMap<>();
-
+    private void initProbas(int srcSize) throws IOException {
         BufferedReader brSrc  = new BufferedReader(new FileReader(lexiconSrc));
 
         while(true) {
@@ -141,44 +144,22 @@ public class Alignment {
 
             int cutIndexSrc = lineSrc.indexOf(' ');
             int tokenSrc = Integer.parseInt(lineSrc.substring(0, cutIndexSrc));
-            result.put(tokenSrc, new HashMap<>());
+            probas.put(tokenSrc, new HashMap<>());
 
-            BufferedReader brDest = new BufferedReader(new FileReader("res/data_jouet/lexique_jouet.txt"));
+
+            BufferedReader brDest = new BufferedReader(new FileReader(lexiconDest));
             while(true) {
                 String lineDest = brDest.readLine();
                 if (lineDest == null) break;
 
                 int cutIndexDest = lineDest.indexOf(' ');
                 int tokenDest = Integer.parseInt(lineDest.substring(0, cutIndexDest));
-                result.get(tokenSrc).put(tokenDest, 1.0/srcSize);
+                probas.get(tokenSrc).put(tokenDest, 1.0/srcSize);
             }
             brDest.close();
         }
 
         brSrc.close();
-
-        return result;
-    }
-
-    private HashMap<Integer, HashMap<Integer, Double>> initNb(List<Integer> tokensSrc, List<Integer> tokensDest) {
-        HashMap<Integer, HashMap<Integer, Double>> result = new HashMap<>();
-
-        for (int tokenSrc : tokensSrc) {
-            result.put(tokenSrc, new HashMap<>());
-            for (int tokenDest : tokensDest)
-                result.get(tokenSrc).put(tokenDest, 0.0);
-        }
-
-        return result;
-    }
-
-    private HashMap<Integer, Double> initTotal(List<Integer> tokensDest) {
-        HashMap<Integer, Double> result = new HashMap<>();
-
-        for (int tokenDest : tokensDest)
-            result.put(tokenDest, 0.0);
-
-        return result;
     }
 
     private HashMap<Integer, Double> normFactors(List<Integer> tokensSrc, List<Integer> tokensDest) {

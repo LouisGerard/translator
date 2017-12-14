@@ -47,6 +47,7 @@ public class Modeler1Gram implements Modeler {
                     result.put(token, 1);
             }
         }
+        result.put(0, tokens.size());
 
         return result;
     }

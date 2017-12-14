@@ -48,8 +48,10 @@ public class Modeler2Gram implements Modeler {
 
                     if (next.containsKey(token))
                         next.replace(token, next.get(token) + 1);
-                    else
+                    else {
+                        ++nbTokens;
                         next.put(token, 1);
+                    }
                 }
                 else {
                     ++nbTokens;
